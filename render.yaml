@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: crewdeck
+    env: docker
+    plan: starter
+    disk:
+      name: crewdeck_data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DB_PATH
+        value: /app/data/crewdeck.db
+      - key: ADMIN_EMAIL
+        value: admin@crewdeck.io
+      - key: ADMIN_PASSWORD
+        generateValue: true

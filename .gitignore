@@ -1,0 +1,27 @@
+# Binaries and executables
+*.exe
+*.o
+*.obj
+crewdeck
+crewdeck.exe
+test_runner
+test_runner.exe
+
+# SQLite runtime databases
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/*.db-journal
+
+# Keep directory structure
+!data/.gitkeep
+
+# Session and temp files
+cookie.txt
+*.log
+
+# IDE & OS artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

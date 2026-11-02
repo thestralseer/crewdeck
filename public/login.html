@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — CREW/DECK Mission Control</title>
+  <meta name="description" content="Sign in to CREW/DECK Employee Management System">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--bg-app);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #starfield-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      max-width: 92vw;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      backdrop-filter: blur(12px);
+      animation: modalFadeIn 300ms ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .brand-mark {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto var(--space-md);
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-amber), #E69500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--font-display);
+      color: #0E1116;
+      box-shadow: 0 0 18px var(--accent-amber-glow);
+    }
+
+    .login-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-md);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: var(--font-body);
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus {
+      border-color: var(--border-focus);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--accent-amber-glow);
+    }
+
+    .login-alert {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      background-color: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      color: var(--accent-rose);
+      font-size: 12px;
+      margin-bottom: var(--space-md);
+      display: none;
+    }
+
+    .demo-pills {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .demo-pills-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .pill-btn {
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition-fast);
+    }
+
+    .pill-btn:hover {
+      background-color: var(--bg-surface-hover);
+      color: var(--accent-amber);
+      border-color: var(--border-medium);
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Starfield / Grid Canvas -->
+  <canvas id="starfield-canvas"></canvas>
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="brand-mark">C/D</div>
+      <h1 class="login-title">CREW / DECK</h1>
+      <p class="login-subtitle">Mission Control for People & Teams</p>
+    </div>
+
+    <div id="login-alert" class="login-alert" role="alert"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email" class="form-label">Operator Email</label>
+        <input type="email" id="email" class="form-input" placeholder="admin@crewdeck.io" required autocomplete="username" />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Security Key / Password</label>
+        <input type="password" id="password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password" />
+      </div>
+
+      <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 14px; margin-top: 6px;">
+        Authorize Access
+      </button>
+    </form>
+
+    <!-- Quick Demo Accounts -->
+    <div class="demo-pills">
+      <div class="demo-pills-label">Quick Seed Operators</div>
+      <div class="pills-grid">
+        <button class="pill-btn" onclick="fillCreds('admin@crewdeck.io', 'admin123')">
+          👑 Admin
+        </button>
+        <button class="pill-btn" onclick="fillCreds('rajesh.verma@crewdeck.io', 'manager123')">
+          ⚡ Manager
+        </button>
+        <button class="pill-btn" onclick="fillCreds('aarav.sharma@crewdeck.io', 'employee123')">
+          👤 Employee
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Particle / Starfield Background
+    const canvas = document.getElementById('starfield-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [];
+
+    function initStars() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 75; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.7 + 0.3,
+          speed: Math.random() * 0.2 + 0.05
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Subtle constellation grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+      ctx.lineWidth = 1;
+      const step = 60;
+      for (let x = 0; x < width; x += step) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += step) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      stars.forEach(s => {
+        s.y -= s.speed;
+        if (s.y < 0) s.y = height;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 176, 32, ${s.alpha * 0.6})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', initStars);
+    initStars();
+    animateStars();
+
+    // Check if already authenticated
+    Auth.checkSession().then(user => {
+      if (user) window.location.href = '/';
+    });
+
+    function fillCreds(email, pass) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = pass;
+    }
+
+    const form = document.getElementById('login-form');
+    const alertBox = document.getElementById('login-alert');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Authenticating...';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        await Auth.login(email, password);
+        window.location.href = '/';
+      } catch (err) {
+        alertBox.innerText = err.message || 'Authentication failed. Please verify credentials.';
+        alertBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Authorize Access';
+      }
+    });
+  </script>
+</body>
+</html>

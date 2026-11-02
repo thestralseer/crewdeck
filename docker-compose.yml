@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  crewdeck:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crewdeck_server
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - PORT=8080
+      - DB_PATH=/app/data/crewdeck.db
+      - PUBLIC_DIR=/app/public
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@crewdeck.io}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+    volumes:
+      - crewdeck_data:/app/data
+
+volumes:
+  crewdeck_data:
+    driver: local

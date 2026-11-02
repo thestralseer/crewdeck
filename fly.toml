@@ -1,0 +1,22 @@
+app = "crewdeck"
+primary_region = "bom"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  DB_PATH = "/app/data/crewdeck.db"
+  PUBLIC_DIR = "/app/public"
+  ADMIN_EMAIL = "admin@crewdeck.io"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[mounts]]
+  source = "crewdeck_data"
+  destination = "/app/data"
