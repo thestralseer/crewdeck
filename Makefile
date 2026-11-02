@@ -1,7 +1,7 @@
 CC ?= gcc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -O2
 INCLUDES = -Iinclude -Ivendor/mongoose -Ivendor/sqlite3 -Ivendor/cjson -Ivendor/libsodium/include
-DEFINES = -DSODIUM_STATIC=1
+DEFINES = -DSODIUM_STATIC=1 -D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE
 
 # Platform specific libraries
 ifeq ($(OS),Windows_NT)
