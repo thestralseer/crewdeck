@@ -35,7 +35,14 @@ const API = {
           window.location.href = '/login.html';
           return null;
         }
-        const errMessage = data?.error?.message || `Request failed with status ${response.status}`;
+        let errMessage = data?.error?.message;
+        if (!errMessage) {
+          if (response.status === 404) {
+            errMessage = 'Backend not reached (404). Check if the C11 server is running or if netlify.toml API proxy is configured.';
+          } else {
+            errMessage = `Request failed with status ${response.status}`;
+          }
+        }
         throw new Error(errMessage);
       }
 

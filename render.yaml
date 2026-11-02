@@ -2,11 +2,7 @@ services:
   - type: web
     name: crewdeck
     env: docker
-    plan: starter
-    disk:
-      name: crewdeck_data
-      mountPath: /app/data
-      sizeGB: 1
+    plan: free
     envVars:
       - key: PORT
         value: 10000
@@ -15,4 +11,9 @@ services:
       - key: ADMIN_EMAIL
         value: admin@crewdeck.io
       - key: ADMIN_PASSWORD
-        generateValue: true
+        value: admin123
+    # Note: On paid plans ($7+/mo), uncomment the disk block below for persistent storage:
+    # disk:
+    #   name: crewdeck_data
+    #   mountPath: /app/data
+    #   sizeGB: 1
