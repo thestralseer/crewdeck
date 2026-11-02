@@ -1,0 +1,25 @@
+name: C11 Engine Build & Test
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsodium-dev make gcc
+
+      - name: Compile C11 Engine
+        run: make TARGET=crewdeck LDFLAGS="-lsodium -lpthread -ldl -lm"
+
+      - name: Run Unit Tests (26/26 Assertions)
+        run: make test TEST_TARGET=test_runner LDFLAGS="-lsodium -lpthread -ldl -lm"

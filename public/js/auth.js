@@ -30,7 +30,7 @@ const Auth = {
       await API.post('/api/v1/auth/logout', {});
     } finally {
       this.user = null;
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
     }
   },
 

@@ -48,7 +48,7 @@ const API = {
 
       if (!response.ok) {
         if (response.status === 401 && !endpoint.includes('auth/login') && !endpoint.includes('auth/me')) {
-          window.location.href = '/login.html';
+          window.location.href = 'login.html';
           return null;
         }
         let errMessage = data?.error?.message;

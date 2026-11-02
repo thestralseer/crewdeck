@@ -12,7 +12,7 @@ const App = {
     // Verify session
     const user = await Auth.checkSession();
     if (!user) {
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
       return;
     }
 
