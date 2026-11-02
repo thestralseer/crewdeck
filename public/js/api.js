@@ -20,7 +20,23 @@ const API = {
     };
 
     try {
-      const response = await fetch(url, config);
+      let response = null;
+      try {
+        response = await fetch(url, config);
+      } catch (netErr) {
+        // Network failure, fall through to MockBackend
+      }
+
+      // If server returned 404 or failed to connect, fall back to self-contained client store
+      if (!response || response.status === 404) {
+        if (window.MockBackend) {
+          return await window.MockBackend.handle(endpoint, options);
+        }
+      }
+
+      if (!response) {
+        throw new Error('Connection failed. Server unreachable.');
+      }
 
       // Handle CSV file downloads
       const contentType = response.headers.get('content-type') || '';
@@ -37,11 +53,7 @@ const API = {
         }
         let errMessage = data?.error?.message;
         if (!errMessage) {
-          if (response.status === 404) {
-            errMessage = 'Backend not reached (404). Check if the C11 server is running or if netlify.toml API proxy is configured.';
-          } else {
-            errMessage = `Request failed with status ${response.status}`;
-          }
+          errMessage = `Request failed with status ${response.status}`;
         }
         throw new Error(errMessage);
       }

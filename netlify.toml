@@ -1,15 +1,21 @@
 [build]
   publish = "public"
+  functions = "netlify/functions"
 
-# SPA Fallback for client-side routing if accessed directly
+# Route API calls to Netlify Functions serverless handler
 [[redirects]]
-  from = "/app/*"
-  to = "/index.html"
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
   status = 200
 
-# API Reverse Proxy (uncomment and replace with your backend URL when deployed on Render or Fly.io)
-# [[redirects]]
-#   from = "/api/*"
-#   to = "https://crewdeck-api.onrender.com/api/:splat"
-#   status = 200
-#   force = true
+# Health check endpoint
+[[redirects]]
+  from = "/healthz"
+  to = "/.netlify/functions/api/healthz"
+  status = 200
+
+# SPA Fallback for direct browser access
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
