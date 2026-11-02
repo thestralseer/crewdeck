@@ -1,0 +1,15 @@
+[build]
+  publish = "public"
+
+# SPA Fallback for client-side routing if accessed directly
+[[redirects]]
+  from = "/app/*"
+  to = "/index.html"
+  status = 200
+
+# API Reverse Proxy (uncomment and replace with your backend URL when deployed on Render or Fly.io)
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://crewdeck-api.onrender.com/api/:splat"
+#   status = 200
+#   force = true
